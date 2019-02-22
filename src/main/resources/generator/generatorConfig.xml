@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<properties resource="config/application.properties" />
+	<!-- context:生成一组对象的环境 id:必选，上下文id，用于在生成错误时提示 defaultModelType:指定生成对象的样式 
+		1，conditional：类似hierarchical； 2，flat：所有内容（主键，blob）等全部生成在一个对象中； 3，hierarchical：主键生成一个XXKey对象(key 
+		class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class) targetRuntime: 1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample； 
+		2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample； introspectedColumnImpl：类全限定名，用于扩展MBG -->
+	<context id="Mysql" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表； 一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+		<property name="autoDelimitKeywords" value="false" />
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 格式化java代码 -->
+		<property name="javaFormatter"
+			value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+		<!-- 格式化XML代码 -->
+		<property name="xmlFormatter"
+			value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+
+		<!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+		<plugin
+			type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+		<commentGenerator>
+			<!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+			<!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!--数据库链接URL，用户名、密码 -->
+		<jdbcConnection
+			driverClass="${spring.datasource.driver-class-name}"
+			connectionURL="${spring.datasource.url}"
+			userId="${spring.datasource.username}"
+			password="${spring.datasource.password}">
+		</jdbcConnection>
+		<javaTypeResolver>
+			<!-- This property is used to specify whether MyBatis Generator should 
+				force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator
+			targetPackage="com.shenzhen.teamway.model"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator
+			targetPackage="com.shenzhen.teamway.mapper"
+			targetProject="src/main/java" type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!-- 要生成的表 tableName是数据库中的表名或视图名(可以用%号匹配所有表) domainObjectName是实体类名 可选： 
+			1，schema：数据库的schema； 2，catalog：数据库的catalog； 3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT 
+			SQL语句中，列名会变成：alias_actualColumnName 4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面； 
+			5，enableInsert（默认true）：指定是否生成insert语句； 6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）； 
+			7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句； 8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)； 
+			9，enableDeleteByPrimaryKey（默认true）：指定是否生成按照主键删除对象的语句（即delete）； 10，enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句； 
+			11，enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）； 
+			12，enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）； 
+			13，modelType：参考context元素的defaultModelType，相当于覆盖； 14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性） 
+			15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers -->
+		<table tableName="cms_basic_map_camera_ref" enableSelectByExample="true"
+			enableDeleteByExample="true" enableCountByExample="true"
+			enableUpdateByExample="true">
+			<!--mysql 配置 -->
+			<generatedKey column="id" sqlStatement="Mysql"
+				identity="true" />
+			<!--oracle 配置 -->
+			<!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from 
+				dual" identity="false" type="pre"/> -->
+				
+			<!-- cms_basic_region -->
+			<!-- cms_basic_device_decoder cms_basic_device_encoder  -->
+		</table>
+	</context>
+</generatorConfiguration>
