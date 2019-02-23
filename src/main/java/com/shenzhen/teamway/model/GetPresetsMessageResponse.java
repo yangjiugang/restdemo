@@ -12,36 +12,49 @@ import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
  */
 public class GetPresetsMessageResponse extends HeadMessage {
 
-    private GetPresetsResponseBody getPresetsResp;//预制位响应消息体内容
+    /**
+     *
+     */
+    private static final long serialVersionUID = -356723226368929087L;
 
-    public GetPresetsResponseBody getGetPresetsResp() {
-        return getPresetsResp;
+    private GetPresetsResponseBody getPresetsResponseBody;// 预制位响应消息体内容
+
+    public GetPresetsResponseBody getGetPresetsResponseBody() {
+        return getPresetsResponseBody;
     }
 
-    public void setGetPresetsResp(GetPresetsResponseBody getPresetsResp) {
-        this.getPresetsResp = getPresetsResp;
+    public void setGetPresetsResponseBody(GetPresetsResponseBody getPresetsResponseBody) {
+        this.getPresetsResponseBody = getPresetsResponseBody;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-
-        GetPresetsMessageResponse that = (GetPresetsMessageResponse)o;
-
-        return getPresetsResp.equals(that.getPresetsResp);
-    }
-
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
+        final int prime = 31;
         int result = super.hashCode();
-        result = 31 * result + getPresetsResp.hashCode();
+        result = prime * result + ((getPresetsResponseBody == null) ? 0 : getPresetsResponseBody.hashCode());
         return result;
     }
 
-    @Override public String toString() {
-        return "GetPresetsMessageResponse{" + "getPresetsResp=" + getPresetsResp + '}';
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GetPresetsMessageResponse other = (GetPresetsMessageResponse)obj;
+        if (getPresetsResponseBody == null) {
+            if (other.getPresetsResponseBody != null)
+                return false;
+        } else if (!getPresetsResponseBody.equals(other.getPresetsResponseBody))
+            return false;
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "GetPresetsMessageResponse [getPresetsResponseBody=" + getPresetsResponseBody + "]";
+    }
+
 }

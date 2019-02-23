@@ -11,6 +11,11 @@ import com.shenzhen.teamway.model.request.GetPresetsRequestBody;
  * @date Date : 2019年02月22日 15:06
  */
 public class GetPresetsMessageRequest extends HeadMessage {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3951835048949080045L;
+    
     private GetPresetsRequestBody getPresets; //预置位请求信息
 
     public GetPresetsRequestBody getGetPresets() {
