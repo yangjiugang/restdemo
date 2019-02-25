@@ -90,7 +90,7 @@ public class PresetsController {
             getPresetsMessageResponse.setUser(getPresetsMessageRequest.getUser());
             getPresetsMessageResponse.setPassword(getPresetsMessageRequest.getPassword());
             getPresetsMessageResponse.setVersion(getPresetsMessageRequest.getVersion());
-            getPresetsMessageResponse.setGetPresetsResponseBody(getPresetsResponseBody);
+            getPresetsMessageResponse.setGetPresetsResp(getPresetsResponseBody);
 
         } catch (ConnectException e) {
             logger.info("无法连接到nvt");

@@ -17,21 +17,21 @@ public class GetPresetsMessageResponse extends HeadMessage {
      */
     private static final long serialVersionUID = -356723226368929087L;
 
-    private GetPresetsResponseBody getPresetsResponseBody;// 预制位响应消息体内容
+    private GetPresetsResponseBody getPresetsResp;// 预制位响应消息体内容
 
-    public GetPresetsResponseBody getGetPresetsResponseBody() {
-        return getPresetsResponseBody;
+    public GetPresetsResponseBody getGetPresetsResp() {
+        return getPresetsResp;
     }
 
-    public void setGetPresetsResponseBody(GetPresetsResponseBody getPresetsResponseBody) {
-        this.getPresetsResponseBody = getPresetsResponseBody;
+    public void setGetPresetsResp(GetPresetsResponseBody getPresetsResp) {
+        this.getPresetsResp = getPresetsResp;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((getPresetsResponseBody == null) ? 0 : getPresetsResponseBody.hashCode());
+        result = prime * result + ((getPresetsResp == null) ? 0 : getPresetsResp.hashCode());
         return result;
     }
 
@@ -44,17 +44,17 @@ public class GetPresetsMessageResponse extends HeadMessage {
         if (getClass() != obj.getClass())
             return false;
         GetPresetsMessageResponse other = (GetPresetsMessageResponse)obj;
-        if (getPresetsResponseBody == null) {
-            if (other.getPresetsResponseBody != null)
+        if (getPresetsResp == null) {
+            if (other.getPresetsResp != null)
                 return false;
-        } else if (!getPresetsResponseBody.equals(other.getPresetsResponseBody))
+        } else if (!getPresetsResp.equals(other.getPresetsResp))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "GetPresetsMessageResponse [getPresetsResponseBody=" + getPresetsResponseBody + "]";
+        return "GetPresetsMessageResponse [getPresetsResp=" + getPresetsResp + "]";
     }
 
 }
