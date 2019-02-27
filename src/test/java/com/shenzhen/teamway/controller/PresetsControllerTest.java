@@ -35,7 +35,7 @@ public class PresetsControllerTest {
     public void testGetPresets() throws UnsupportedEncodingException, Exception {
         GetPresetsMessageRequest getPresetsMessageRequest = new GetPresetsMessageRequest();
         getPresetsMessageRequest.setCommand("getPresets");
-        getPresetsMessageRequest.setAddress("192.168.12.99");
+        getPresetsMessageRequest.setAddress("http://192.168.12.99");
         getPresetsMessageRequest.setPort("80");
         getPresetsMessageRequest.setUser("admin");
         getPresetsMessageRequest.setPassword("12345");
@@ -64,7 +64,7 @@ public class PresetsControllerTest {
     public void testSetPreset() throws UnsupportedEncodingException, Exception {
         SetPrestMessageRequest setPrestMessageRequest = new SetPrestMessageRequest();
         setPrestMessageRequest.setCommand("setPreset");
-        setPrestMessageRequest.setAddress("192.168.12.99");
+        setPrestMessageRequest.setAddress("http://192.168.12.99");
         setPrestMessageRequest.setPort("80");
         setPrestMessageRequest.setUser("admin");
         setPrestMessageRequest.setPassword("12345");
@@ -95,7 +95,7 @@ public class PresetsControllerTest {
     public void testGotoPreset() throws UnsupportedEncodingException, Exception {
         GotoPresetMessageRequest gotoPresetMessageRequest = new GotoPresetMessageRequest();
         gotoPresetMessageRequest.setCommand("gotoPreset");
-        gotoPresetMessageRequest.setAddress("192.168.12.99");
+        gotoPresetMessageRequest.setAddress("http://192.168.12.99");
         gotoPresetMessageRequest.setPort("80");
         gotoPresetMessageRequest.setUser("admin");
         gotoPresetMessageRequest.setPassword("12345");
