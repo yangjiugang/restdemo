@@ -17,6 +17,8 @@ public class GetPresetsMessageResponse extends HeadMessage {
      */
     private static final long serialVersionUID = -356723226368929087L;
 
+    private CommandResultMessage commandResp; // 返回命令执行结果
+    
     private GetPresetsResponseBody getPresetsResp;// 预制位响应消息体内容
 
     public GetPresetsResponseBody getGetPresetsResp() {
@@ -27,10 +29,19 @@ public class GetPresetsMessageResponse extends HeadMessage {
         this.getPresetsResp = getPresetsResp;
     }
 
+    public CommandResultMessage getCommandResp() {
+        return commandResp;
+    }
+
+    public void setCommandResp(CommandResultMessage commandResp) {
+        this.commandResp = commandResp;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((commandResp == null) ? 0 : commandResp.hashCode());
         result = prime * result + ((getPresetsResp == null) ? 0 : getPresetsResp.hashCode());
         return result;
     }
@@ -44,6 +55,11 @@ public class GetPresetsMessageResponse extends HeadMessage {
         if (getClass() != obj.getClass())
             return false;
         GetPresetsMessageResponse other = (GetPresetsMessageResponse)obj;
+        if (commandResp == null) {
+            if (other.commandResp != null)
+                return false;
+        } else if (!commandResp.equals(other.commandResp))
+            return false;
         if (getPresetsResp == null) {
             if (other.getPresetsResp != null)
                 return false;
@@ -54,7 +70,7 @@ public class GetPresetsMessageResponse extends HeadMessage {
 
     @Override
     public String toString() {
-        return "GetPresetsMessageResponse [getPresetsResp=" + getPresetsResp + "]";
+        return "GetPresetsMessageResponse [getPresetsResp=" + getPresetsResp + ", commandResp=" + commandResp + "]";
     }
 
 }

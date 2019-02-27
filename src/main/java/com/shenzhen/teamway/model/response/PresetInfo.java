@@ -14,15 +14,15 @@ public class PresetInfo implements Serializable {
 
     private static final long serialVersionUID = 7690683898741464608L;
 
-    private Integer index;
+    private String token;
     private String name;
 
-    public Integer getIndex() {
-        return index;
+    public String getToken() {
+        return token;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getName() {
@@ -33,26 +33,40 @@ public class PresetInfo implements Serializable {
         this.name = name;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        PresetInfo that = (PresetInfo)o;
-
-        if (!index.equals(that.index))
-            return false;
-        return name.equals(that.name);
-    }
-
-    @Override public int hashCode() {
-        int result = index.hashCode();
-        result = 31 * result + name.hashCode();
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((token == null) ? 0 : token.hashCode());
         return result;
     }
 
-    @Override public String toString() {
-        return "PresetInfo{" + "index=" + index + ", name='" + name + '\'' + '}';
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PresetInfo other = (PresetInfo)obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (token == null) {
+            if (other.token != null)
+                return false;
+        } else if (!token.equals(other.token))
+            return false;
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "PresetInfo [token=" + token + ", name=" + name + "]";
+    }
+
 }

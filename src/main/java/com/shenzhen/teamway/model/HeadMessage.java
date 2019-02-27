@@ -19,6 +19,7 @@ public class HeadMessage implements Serializable {
     private String user;
     private String password;
     private Integer version;
+    private String uuid;
 
     public String getCommand() {
         return command;
@@ -68,39 +69,79 @@ public class HeadMessage implements Serializable {
         this.version = version;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        HeadMessage that = (HeadMessage)o;
-
-        if (!command.equals(that.command))
-            return false;
-        if (!address.equals(that.address))
-            return false;
-        if (!port.equals(that.port))
-            return false;
-        if (!user.equals(that.user))
-            return false;
-        if (!password.equals(that.password))
-            return false;
-        return version.equals(that.version);
+    public String getUuid() {
+        return uuid;
     }
 
-    @Override public int hashCode() {
-        int result = command.hashCode();
-        result = 31 * result + address.hashCode();
-        result = 31 * result + port.hashCode();
-        result = 31 * result + user.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + version.hashCode();
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((address == null) ? 0 : address.hashCode());
+        result = prime * result + ((command == null) ? 0 : command.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((port == null) ? 0 : port.hashCode());
+        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+        result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
     }
 
-    @Override public String toString() {
-        return "HeadMessage{" + "command='" + command + '\'' + ", address='" + address + '\'' + ", port='" + port + '\''
-            + ", user='" + user + '\'' + ", password='" + password + '\'' + '}';
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        HeadMessage other = (HeadMessage)obj;
+        if (address == null) {
+            if (other.address != null)
+                return false;
+        } else if (!address.equals(other.address))
+            return false;
+        if (command == null) {
+            if (other.command != null)
+                return false;
+        } else if (!command.equals(other.command))
+            return false;
+        if (password == null) {
+            if (other.password != null)
+                return false;
+        } else if (!password.equals(other.password))
+            return false;
+        if (port == null) {
+            if (other.port != null)
+                return false;
+        } else if (!port.equals(other.port))
+            return false;
+        if (user == null) {
+            if (other.user != null)
+                return false;
+        } else if (!user.equals(other.user))
+            return false;
+        if (uuid == null) {
+            if (other.uuid != null)
+                return false;
+        } else if (!uuid.equals(other.uuid))
+            return false;
+        if (version == null) {
+            if (other.version != null)
+                return false;
+        } else if (!version.equals(other.version))
+            return false;
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "HeadMessage [command=" + command + ", address=" + address + ", port=" + port + ", user=" + user
+            + ", password=" + password + ", version=" + version + ", uuid=" + uuid + "]";
+    }
+
 }

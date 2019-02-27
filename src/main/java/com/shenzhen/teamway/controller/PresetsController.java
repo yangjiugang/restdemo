@@ -1,5 +1,6 @@
 package com.shenzhen.teamway.controller;
 
+import com.shenzhen.teamway.model.CommandResultMessage;
 import com.shenzhen.teamway.model.GetPresetsMessageRequest;
 import com.shenzhen.teamway.model.GetPresetsMessageResponse;
 import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
@@ -43,6 +44,7 @@ public class PresetsController {
     public @ResponseBody GetPresetsMessageResponse getPresets(@RequestBody GetPresetsMessageRequest getPresetsMessageRequest) {
         logger.info("-------------begin GetPresetsMessageResponse ,method param:{}--------------------",  getPresetsMessageRequest);
         GetPresetsMessageResponse getPresetsMessageResponse = new GetPresetsMessageResponse();
+        CommandResultMessage resultMessage = new CommandResultMessage();
         try {
             String ip = getPresetsMessageRequest.getAddress().concat(":").concat(getPresetsMessageRequest.getPort());
             String userName = getPresetsMessageRequest.getUser();
@@ -76,14 +78,13 @@ public class PresetsController {
             List<PresetInfo> infoList = new ArrayList<PresetInfo>();
             for (int i = 0; i < list.size(); i++) {
                 PresetInfo presetInfo = new PresetInfo();
-                presetInfo.setIndex(Integer.parseInt(list.get(i).getToken()));
+                presetInfo.setToken(list.get(i).getToken());
                 presetInfo.setName(list.get(i).getName());
                 infoList.add(presetInfo);
             }
             // 封装预置位返回消息体实体
             GetPresetsResponseBody getPresetsResponseBody = new GetPresetsResponseBody();
-            getPresetsResponseBody.setUuid(getPresetsMessageRequest.getGetPresets().getUuid()); //todo
-            getPresetsResponseBody.setPresetsNumber(String.valueOf(list.size())); //todo;
+            getPresetsResponseBody.setPresetsNumber(list.size()); //todo;
             getPresetsResponseBody.setPresets(infoList);
 
             // 封装返回消息内容
@@ -93,12 +94,24 @@ public class PresetsController {
             getPresetsMessageResponse.setUser(getPresetsMessageRequest.getUser());
             getPresetsMessageResponse.setPassword(getPresetsMessageRequest.getPassword());
             getPresetsMessageResponse.setVersion(getPresetsMessageRequest.getVersion());
+            getPresetsMessageResponse.setUuid(getPresetsMessageRequest.getUuid());
             getPresetsMessageResponse.setGetPresetsResp(getPresetsResponseBody);
+            
+            //封装返回结果
+            resultMessage.setResult(true);
+            resultMessage.setMessage("操作成功");
+            getPresetsMessageResponse.setCommandResp(resultMessage);
 
         } catch (ConnectException e) {
             logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            getPresetsMessageResponse.setCommandResp(resultMessage);
         } catch (SOAPException e) {
             logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            getPresetsMessageResponse.setCommandResp(resultMessage);
             e.printStackTrace();
         }
         logger.info("-------------end GetPresetsMessageResponse --------------------");

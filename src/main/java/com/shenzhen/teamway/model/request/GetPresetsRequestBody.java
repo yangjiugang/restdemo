@@ -14,17 +14,8 @@ public class GetPresetsRequestBody implements Serializable {
 
     private static final long serialVersionUID = 5161386484393720835L;
 
-    private String uuid;
     private String ptzUrl;
     private String profile;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getPtzUrl() {
         return ptzUrl;
@@ -42,33 +33,40 @@ public class GetPresetsRequestBody implements Serializable {
         this.profile = profile;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        if (!super.equals(o))
-            return false;
-
-        GetPresetsRequestBody that = (GetPresetsRequestBody)o;
-
-        if (!uuid.equals(that.uuid))
-            return false;
-        if (!ptzUrl.equals(that.ptzUrl))
-            return false;
-        return profile.equals(that.profile);
-    }
-
-    @Override public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + uuid.hashCode();
-        result = 31 * result + ptzUrl.hashCode();
-        result = 31 * result + profile.hashCode();
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((profile == null) ? 0 : profile.hashCode());
+        result = prime * result + ((ptzUrl == null) ? 0 : ptzUrl.hashCode());
         return result;
     }
 
-    @Override public String toString() {
-        return "GetPresetsRequestBody{" + "uuid='" + uuid + '\'' + ", ptzUrl='" + ptzUrl + '\'' + ", profile='" + profile
-            + '\'' + '}';
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GetPresetsRequestBody other = (GetPresetsRequestBody)obj;
+        if (profile == null) {
+            if (other.profile != null)
+                return false;
+        } else if (!profile.equals(other.profile))
+            return false;
+        if (ptzUrl == null) {
+            if (other.ptzUrl != null)
+                return false;
+        } else if (!ptzUrl.equals(other.ptzUrl))
+            return false;
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "GetPresetsRequestBody [ptzUrl=" + ptzUrl + ", profile=" + profile + "]";
+    }
+
 }

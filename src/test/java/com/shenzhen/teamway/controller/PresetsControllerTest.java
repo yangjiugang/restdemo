@@ -36,9 +36,9 @@ public class PresetsControllerTest {
         getPresetsMessageRequest.setUser("admin");
         getPresetsMessageRequest.setPassword("12345");
         getPresetsMessageRequest.setVersion(1);
+        getPresetsMessageRequest.setUuid("000001");
 
         GetPresetsRequestBody getPresetsRequestBody = new GetPresetsRequestBody();
-        getPresetsRequestBody.setUuid("000001");
         getPresetsRequestBody.setPtzUrl("http://192.168.12.103:2000/onvif/PTZ");
         getPresetsRequestBody.setProfile("profile_1");
         getPresetsMessageRequest.setGetPresets(getPresetsRequestBody);
