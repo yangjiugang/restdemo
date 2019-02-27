@@ -4,6 +4,7 @@ import com.shenzhen.teamway.model.request.SetPresetRequestBody;
 
 /**
  * 封装设置预置位 请求报文
+ * 
  * @author gaven
  * @date 2019/02/27
  */
@@ -13,21 +14,21 @@ public class SetPrestMessageRequest extends HeadMessage {
      *
      */
     private static final long serialVersionUID = 1919794193309111894L;
-    private SetPresetRequestBody setPresetRequestBody;
+    private SetPresetRequestBody setPreset;
 
-    public SetPresetRequestBody getSetPresetRequestBody() {
-        return setPresetRequestBody;
+    public SetPresetRequestBody getSetPreset() {
+        return setPreset;
     }
 
-    public void setSetPresetRequestBody(SetPresetRequestBody setPresetRequestBody) {
-        this.setPresetRequestBody = setPresetRequestBody;
+    public void setSetPreset(SetPresetRequestBody setPreset) {
+        this.setPreset = setPreset;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((setPresetRequestBody == null) ? 0 : setPresetRequestBody.hashCode());
+        result = prime * result + ((setPreset == null) ? 0 : setPreset.hashCode());
         return result;
     }
 
@@ -40,17 +41,17 @@ public class SetPrestMessageRequest extends HeadMessage {
         if (getClass() != obj.getClass())
             return false;
         SetPrestMessageRequest other = (SetPrestMessageRequest)obj;
-        if (setPresetRequestBody == null) {
-            if (other.setPresetRequestBody != null)
+        if (setPreset == null) {
+            if (other.setPreset != null)
                 return false;
-        } else if (!setPresetRequestBody.equals(other.setPresetRequestBody))
+        } else if (!setPreset.equals(other.setPreset))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "SetPrestMessageRequest [setPresetRequestBody=" + setPresetRequestBody + "]";
+        return "SetPrestMessageRequest [setPreset=" + setPreset + "]";
     }
 
 }

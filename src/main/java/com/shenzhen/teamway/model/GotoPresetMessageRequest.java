@@ -4,6 +4,7 @@ import com.shenzhen.teamway.model.request.GotoPresetRequestBody;
 
 /**
  * 封装调用预置位 请求报文
+ * 
  * @author gaven
  * @date 2019/02/27
  */
@@ -13,21 +14,21 @@ public class GotoPresetMessageRequest extends HeadMessage {
      *
      */
     private static final long serialVersionUID = -1917759416564796818L;
-    private GotoPresetRequestBody gotoPresetRequestBody;
+    private GotoPresetRequestBody gotoPreset;
 
-    public GotoPresetRequestBody getGotoPresetRequestBody() {
-        return gotoPresetRequestBody;
+    public GotoPresetRequestBody getGotoPreset() {
+        return gotoPreset;
     }
 
-    public void setGotoPresetRequestBody(GotoPresetRequestBody gotoPresetRequestBody) {
-        this.gotoPresetRequestBody = gotoPresetRequestBody;
+    public void setGotoPreset(GotoPresetRequestBody gotoPreset) {
+        this.gotoPreset = gotoPreset;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((gotoPresetRequestBody == null) ? 0 : gotoPresetRequestBody.hashCode());
+        result = prime * result + ((gotoPreset == null) ? 0 : gotoPreset.hashCode());
         return result;
     }
 
@@ -40,17 +41,17 @@ public class GotoPresetMessageRequest extends HeadMessage {
         if (getClass() != obj.getClass())
             return false;
         GotoPresetMessageRequest other = (GotoPresetMessageRequest)obj;
-        if (gotoPresetRequestBody == null) {
-            if (other.gotoPresetRequestBody != null)
+        if (gotoPreset == null) {
+            if (other.gotoPreset != null)
                 return false;
-        } else if (!gotoPresetRequestBody.equals(other.gotoPresetRequestBody))
+        } else if (!gotoPreset.equals(other.gotoPreset))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "GotoPresetMessageRequest [gotoPresetRequestBody=" + gotoPresetRequestBody + "]";
+        return "GotoPresetMessageRequest [gotoPreset=" + gotoPreset + "]";
     }
 
 }

@@ -3,6 +3,8 @@ package com.shenzhen.teamway.controller;
 import com.shenzhen.teamway.model.CommandResultMessage;
 import com.shenzhen.teamway.model.GetPresetsMessageRequest;
 import com.shenzhen.teamway.model.GetPresetsMessageResponse;
+import com.shenzhen.teamway.model.GotoPresetMessageRequest;
+import com.shenzhen.teamway.model.SetPrestMessageRequest;
 import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
 import com.shenzhen.teamway.model.response.PresetInfo;
 
@@ -37,14 +39,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class PresetsController {
-    
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 获取预置位列表
+     * @param getPresetsMessageRequest
+     * @return
+     */
     @RequestMapping(value = "/getPresets", method = RequestMethod.POST)
     public @ResponseBody GetPresetsMessageResponse getPresets(@RequestBody GetPresetsMessageRequest getPresetsMessageRequest) {
-        logger.info("-------------begin GetPresetsMessageResponse ,method param:{}--------------------",  getPresetsMessageRequest);
+        
+        logger.info("-------------begin GetPresetsMessageResponse ,method param:{}--------------------", getPresetsMessageRequest);
         GetPresetsMessageResponse getPresetsMessageResponse = new GetPresetsMessageResponse();
         CommandResultMessage resultMessage = new CommandResultMessage();
+        
         try {
             String ip = getPresetsMessageRequest.getAddress().concat(":").concat(getPresetsMessageRequest.getPort());
             String userName = getPresetsMessageRequest.getUser();
@@ -70,9 +79,9 @@ public class PresetsController {
              *先连接上onvif 再获取摄像机的token 
              */
             List<Profile> profile = nvt.getDevices().getProfiles();
-            String Token = profile.get(0).getToken();
+            String token = profile.get(0).getToken();
             PtzDevices ptzDevices = nvt.getPtz(); // 获取PTZ设备
-            List<PTZPreset> list = ptzDevices.getPresets(Token);// 获取预置位信息
+            List<PTZPreset> list = ptzDevices.getPresets(token);// 获取预置位信息
 
             // 包装预置位信息并返回
             List<PresetInfo> infoList = new ArrayList<PresetInfo>();
@@ -84,7 +93,7 @@ public class PresetsController {
             }
             // 封装预置位返回消息体实体
             GetPresetsResponseBody getPresetsResponseBody = new GetPresetsResponseBody();
-            getPresetsResponseBody.setPresetsNumber(list.size()); //todo;
+            getPresetsResponseBody.setPresetsNumber(list.size()); // todo;
             getPresetsResponseBody.setPresets(infoList);
 
             // 封装返回消息内容
@@ -96,8 +105,8 @@ public class PresetsController {
             getPresetsMessageResponse.setVersion(getPresetsMessageRequest.getVersion());
             getPresetsMessageResponse.setUuid(getPresetsMessageRequest.getUuid());
             getPresetsMessageResponse.setGetPresetsResp(getPresetsResponseBody);
-            
-            //封装返回结果
+
+            // 封装返回结果
             resultMessage.setResult(true);
             resultMessage.setMessage("操作成功");
             getPresetsMessageResponse.setCommandResp(resultMessage);
@@ -117,6 +126,76 @@ public class PresetsController {
         logger.info("-------------end GetPresetsMessageResponse --------------------");
         return getPresetsMessageResponse;
     }
+
+    /**
+     * 设置预置位信息
+     * @param prestMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/setPreset", method = RequestMethod.POST)
+    public @ResponseBody CommandResultMessage setPreset(@RequestBody SetPrestMessageRequest prestMessageRequest) {
+        logger.info("-------------begin setPreset ,method param:{}--------------------",prestMessageRequest);
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = prestMessageRequest.getAddress().concat(":").concat(prestMessageRequest.getPort());
+            String userName = prestMessageRequest.getUser();
+            String password = prestMessageRequest.getPassword();
+            // 获取连接
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
+            //获取profile 并获得token
+            List<Profile> profile = nvt.getDevices().getProfiles();
+            String token = profile.get(0).getToken();
+            PtzDevices ptzDevices = nvt.getPtz(); // 获取PTZ设备
+            ptzDevices.setPreset(prestMessageRequest.getSetPreset().getName(), prestMessageRequest.getSetPreset().getToken(), token);
+            resultMessage.setResult(true);
+            resultMessage.setMessage("设置成功");
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end setPreset --------------------");
+        return resultMessage;
+    }
     
-    
+    /**
+     * 调用预置位
+     * @param gotoPresetMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/gotoPreset", method = RequestMethod.POST)
+    public @ResponseBody CommandResultMessage gotoPreset(@RequestBody GotoPresetMessageRequest gotoPresetMessageRequest) {
+        logger.info("-------------begin gotoPreset ,method param:{}--------------------",gotoPresetMessageRequest);
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = gotoPresetMessageRequest.getAddress().concat(":").concat(gotoPresetMessageRequest.getPort());
+            String userName = gotoPresetMessageRequest.getUser();
+            String password = gotoPresetMessageRequest.getPassword();
+            // 获取连接
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
+            //获取profile 并获得token
+            List<Profile> profile = nvt.getDevices().getProfiles();
+            String token = profile.get(0).getToken();
+            PtzDevices ptzDevices = nvt.getPtz(); // 获取PTZ设备
+            ptzDevices.gotoPreset(gotoPresetMessageRequest.getGotoPreset().getToken(), token);
+            resultMessage.setResult(true);
+            resultMessage.setMessage("操作成功");
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end gotoPreset --------------------");
+        return resultMessage;
+    }
 }
