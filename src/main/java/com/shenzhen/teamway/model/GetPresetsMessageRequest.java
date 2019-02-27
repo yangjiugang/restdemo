@@ -15,8 +15,8 @@ public class GetPresetsMessageRequest extends HeadMessage {
      *
      */
     private static final long serialVersionUID = -3951835048949080045L;
-    
-    private GetPresetsRequestBody getPresets; //预置位请求信息
+
+    private GetPresetsRequestBody getPresets; // 预置位请求信息
 
     public GetPresetsRequestBody getGetPresets() {
         return getPresets;
@@ -26,7 +26,8 @@ public class GetPresetsMessageRequest extends HeadMessage {
         this.getPresets = getPresets;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -39,13 +40,16 @@ public class GetPresetsMessageRequest extends HeadMessage {
         return getPresets.equals(that.getPresets);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + getPresets.hashCode();
         return result;
     }
 
-    @Override public String toString() {
-        return "GetPresetsMessageRequest{" + "getPresets=" + getPresets + '}';
+    @Override
+    public String toString() {
+        return "GetPresetsMessageRequest [getPresets=" + getPresets + "]";
     }
+
 }

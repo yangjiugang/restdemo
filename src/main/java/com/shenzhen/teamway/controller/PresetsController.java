@@ -44,8 +44,11 @@ public class PresetsController {
         logger.info("-------------begin GetPresetsMessageResponse ,method param:{}--------------------",  getPresetsMessageRequest);
         GetPresetsMessageResponse getPresetsMessageResponse = new GetPresetsMessageResponse();
         try {
+            String ip = getPresetsMessageRequest.getAddress().concat(":").concat(getPresetsMessageRequest.getPort());
+            String userName = getPresetsMessageRequest.getUser();
+            String password = getPresetsMessageRequest.getPassword();
             // 获取连接
-            OnvifDevice nvt = new OnvifDevice("192.168.0.20", "admin", "password");
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
             Date nvtDate = nvt.getDevices().getDate();
             logger.info("当前设备的系统时间为：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(nvtDate));
 
@@ -73,14 +76,14 @@ public class PresetsController {
             List<PresetInfo> infoList = new ArrayList<PresetInfo>();
             for (int i = 0; i < list.size(); i++) {
                 PresetInfo presetInfo = new PresetInfo();
-                presetInfo.setIndex(i + 1);
+                presetInfo.setIndex(Integer.parseInt(list.get(i).getToken()));
                 presetInfo.setName(list.get(i).getName());
                 infoList.add(presetInfo);
             }
             // 封装预置位返回消息体实体
             GetPresetsResponseBody getPresetsResponseBody = new GetPresetsResponseBody();
-            getPresetsResponseBody.setUuid("000001"); //todo
-            getPresetsResponseBody.setPresetsNumber("2"); //todo;
+            getPresetsResponseBody.setUuid(getPresetsMessageRequest.getGetPresets().getUuid()); //todo
+            getPresetsResponseBody.setPresetsNumber(String.valueOf(list.size())); //todo;
             getPresetsResponseBody.setPresets(infoList);
 
             // 封装返回消息内容

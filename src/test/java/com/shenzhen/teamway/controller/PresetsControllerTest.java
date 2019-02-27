@@ -31,10 +31,10 @@ public class PresetsControllerTest {
     public void testGetPresets() throws UnsupportedEncodingException, Exception {
         GetPresetsMessageRequest getPresetsMessageRequest = new GetPresetsMessageRequest();
         getPresetsMessageRequest.setCommand("getPresets");
-        getPresetsMessageRequest.setAddress("192.168.12.103");
+        getPresetsMessageRequest.setAddress("192.168.12.99");
         getPresetsMessageRequest.setPort("80");
         getPresetsMessageRequest.setUser("admin");
-        getPresetsMessageRequest.setPassword("123456");
+        getPresetsMessageRequest.setPassword("12345");
         getPresetsMessageRequest.setVersion(1);
 
         GetPresetsRequestBody getPresetsRequestBody = new GetPresetsRequestBody();
