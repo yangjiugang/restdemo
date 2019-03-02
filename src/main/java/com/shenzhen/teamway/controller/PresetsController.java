@@ -1,6 +1,8 @@
 package com.shenzhen.teamway.controller;
 
 import com.shenzhen.teamway.model.CommandResultMessage;
+import com.shenzhen.teamway.model.GetMediaUrlMessageRequest;
+import com.shenzhen.teamway.model.GetMediaUrlMessageResponse;
 import com.shenzhen.teamway.model.GetPresetsMessageRequest;
 import com.shenzhen.teamway.model.GetPresetsMessageResponse;
 import com.shenzhen.teamway.model.GotoPresetMessageRequest;
@@ -198,4 +200,22 @@ public class PresetsController {
         logger.info("-------------end gotoPreset --------------------");
         return resultMessage;
     }
+    
+    @RequestMapping(value = "/getMediaUrl", method = RequestMethod.POST)
+    public @ResponseBody GetMediaUrlMessageResponse getMediaUrl(@RequestBody GetMediaUrlMessageRequest getMediaUrlMessageRequest) {
+        try {
+            String ip = getMediaUrlMessageRequest.getAddress().concat(":").concat(getMediaUrlMessageRequest.getPort());
+            String userName = getMediaUrlMessageRequest.getUser();
+            String password = getMediaUrlMessageRequest.getPassword();
+            // 获取连接
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
+        } catch (ConnectException e) {
+             e.printStackTrace();
+        } catch (SOAPException e) {
+             e.printStackTrace();
+        }
+        return null;
+
+    }
+    
 }
