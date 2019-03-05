@@ -17,7 +17,7 @@ public class GetMediaProfileResponseBody implements Serializable {
 
     private Integer profileNumber;
 
-    private String[] profiles;
+    private String[] profiles = null;
 
     public Integer getProfileNumber() {
         return profileNumber;

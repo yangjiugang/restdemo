@@ -1,5 +1,7 @@
 package com.shenzhen.teamway.model;
 
+import com.shenzhen.teamway.model.request.RebootRequestBody;
+
 /**
  * 封装重启请求报文
  * 
@@ -13,13 +15,13 @@ public class RebootMessageRequest extends HeadMessage {
      */
     private static final long serialVersionUID = 503040021386822978L;
 
-    private RebootMessageRequest reboot;
+    private RebootRequestBody reboot;
 
-    public RebootMessageRequest getReboot() {
+    public RebootRequestBody getReboot() {
         return reboot;
     }
 
-    public void setReboot(RebootMessageRequest reboot) {
+    public void setReboot(RebootRequestBody reboot) {
         this.reboot = reboot;
     }
 

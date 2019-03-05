@@ -16,12 +16,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.shenzhen.teamway.model.GetMediaProfileMessageRequest;
+import com.shenzhen.teamway.model.GetMediaUrlMessageRequest;
 import com.shenzhen.teamway.model.GetPresetsMessageRequest;
+import com.shenzhen.teamway.model.GetPtzUrlMessageRequest;
 import com.shenzhen.teamway.model.GotoPresetMessageRequest;
+import com.shenzhen.teamway.model.RebootMessageRequest;
 import com.shenzhen.teamway.model.SetPrestMessageRequest;
+import com.shenzhen.teamway.model.request.GetMediaProfileRequestBody;
+import com.shenzhen.teamway.model.request.GetMediaUrlRequestBody;
 import com.shenzhen.teamway.model.request.GetPresetsRequestBody;
+import com.shenzhen.teamway.model.request.GetPtzUrlRequestBody;
 import com.shenzhen.teamway.model.request.GotoPresetRequestBody;
+import com.shenzhen.teamway.model.request.RebootRequestBody;
 import com.shenzhen.teamway.model.request.SetPresetRequestBody;
+import com.shenzhen.teamway.model.response.GetMediaUrlResponseBody;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,7 +44,7 @@ public class PresetsControllerTest {
     public void testGetPresets() throws UnsupportedEncodingException, Exception {
         GetPresetsMessageRequest getPresetsMessageRequest = new GetPresetsMessageRequest();
         getPresetsMessageRequest.setCommand("getPresets");
-        getPresetsMessageRequest.setAddress("http://192.168.12.99");
+        getPresetsMessageRequest.setAddress("192.168.12.99");
         getPresetsMessageRequest.setPort("80");
         getPresetsMessageRequest.setUser("admin");
         getPresetsMessageRequest.setPassword("12345");
@@ -64,7 +73,7 @@ public class PresetsControllerTest {
     public void testSetPreset() throws UnsupportedEncodingException, Exception {
         SetPrestMessageRequest setPrestMessageRequest = new SetPrestMessageRequest();
         setPrestMessageRequest.setCommand("setPreset");
-        setPrestMessageRequest.setAddress("http://192.168.12.99");
+        setPrestMessageRequest.setAddress("192.168.12.99");
         setPrestMessageRequest.setPort("80");
         setPrestMessageRequest.setUser("admin");
         setPrestMessageRequest.setPassword("12345");
@@ -95,7 +104,7 @@ public class PresetsControllerTest {
     public void testGotoPreset() throws UnsupportedEncodingException, Exception {
         GotoPresetMessageRequest gotoPresetMessageRequest = new GotoPresetMessageRequest();
         gotoPresetMessageRequest.setCommand("gotoPreset");
-        gotoPresetMessageRequest.setAddress("http://192.168.12.99");
+        gotoPresetMessageRequest.setAddress("192.168.12.99");
         gotoPresetMessageRequest.setPort("80");
         gotoPresetMessageRequest.setUser("admin");
         gotoPresetMessageRequest.setPassword("12345");
@@ -114,6 +123,114 @@ public class PresetsControllerTest {
 
         String responseString = mockMvc
             .perform(MockMvcRequestBuilders.post("http://localhost:8081/gotoPreset")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println("-----返回的json = " + responseString);
+    }
+    
+    @Test
+    public void testGetMediaUrl() throws UnsupportedEncodingException, Exception {
+        GetMediaUrlMessageRequest getMediaUrlMessageRequest = new GetMediaUrlMessageRequest();
+        getMediaUrlMessageRequest.setCommand("getMediaUrl");
+        getMediaUrlMessageRequest.setAddress("192.168.12.99");
+        getMediaUrlMessageRequest.setPort("80");
+        getMediaUrlMessageRequest.setUser("admin");
+        getMediaUrlMessageRequest.setPassword("12345");
+        getMediaUrlMessageRequest.setVersion(1);
+        getMediaUrlMessageRequest.setUuid("000001");
+
+//        GetMediaUrlRequestBody getMediaUrlRequestBody = new GetMediaUrlRequestBody();
+//        getMediaUrlMessageRequest.setGetMediaUrl(getMediaUrlRequestBody);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        java.lang.String requestJson = ow.writeValueAsString(getMediaUrlMessageRequest);
+
+        String responseString = mockMvc
+            .perform(MockMvcRequestBuilders.post("http://localhost:8081/getMediaUrl")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println("-----返回的json = " + responseString);
+    }
+    
+    @Test
+    public void testGetPtzUrl() throws UnsupportedEncodingException, Exception {
+        GetPtzUrlMessageRequest getPtzUrlMessageRequest = new GetPtzUrlMessageRequest();
+        getPtzUrlMessageRequest.setCommand("getPtzUrl");
+        getPtzUrlMessageRequest.setAddress("192.168.12.99");
+        getPtzUrlMessageRequest.setPort("80");
+        getPtzUrlMessageRequest.setUser("admin");
+        getPtzUrlMessageRequest.setPassword("12345");
+        getPtzUrlMessageRequest.setVersion(1);
+        getPtzUrlMessageRequest.setUuid("000001");
+
+//        GetPtzUrlRequestBody getPtzUrlRequestBody = new GetPtzUrlRequestBody();
+//        getPtzUrlMessageRequest.setGetPtzUrl(getPtzUrlRequestBody);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        java.lang.String requestJson = ow.writeValueAsString(getPtzUrlMessageRequest);
+
+        String responseString = mockMvc
+            .perform(MockMvcRequestBuilders.post("http://localhost:8081/getPtzUrl")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println("-----返回的json = " + responseString);
+    }
+    
+    @Test
+    public void testGetMediaProfile() throws UnsupportedEncodingException, Exception {
+        GetMediaProfileMessageRequest getMediaProfileMessageRequest = new GetMediaProfileMessageRequest();
+        getMediaProfileMessageRequest.setCommand("getMediaProfile");
+        getMediaProfileMessageRequest.setAddress("192.168.12.99");
+        getMediaProfileMessageRequest.setPort("80");
+        getMediaProfileMessageRequest.setUser("admin");
+        getMediaProfileMessageRequest.setPassword("12345");
+        getMediaProfileMessageRequest.setVersion(1);
+        getMediaProfileMessageRequest.setUuid("000001");
+
+//        GetMediaProfileRequestBody getMediaProfileRequestBody = new  GetMediaProfileRequestBody();
+//        getMediaProfileMessageRequest.setGetMediaProfile(getMediaProfileRequestBody);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        java.lang.String requestJson = ow.writeValueAsString(getMediaProfileMessageRequest);
+
+        String responseString = mockMvc
+            .perform(MockMvcRequestBuilders.post("http://localhost:8081/getMediaProfile")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println("-----返回的json = " + responseString);
+    }
+    
+    @Test
+    public void testReboot() throws UnsupportedEncodingException, Exception {
+        RebootMessageRequest rebootMessageRequest = new RebootMessageRequest();
+        rebootMessageRequest.setCommand("reboot");
+        rebootMessageRequest.setAddress("192.168.12.99");
+        rebootMessageRequest.setPort("80");
+        rebootMessageRequest.setUser("admin");
+        rebootMessageRequest.setPassword("12345");
+        rebootMessageRequest.setVersion(1);
+        rebootMessageRequest.setUuid("000001");
+
+//        RebootRequestBody rebootRequestBody = new  RebootRequestBody();
+//        rebootMessageRequest.setReboot(rebootRequestBody);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        java.lang.String requestJson = ow.writeValueAsString(rebootMessageRequest);
+
+        String responseString = mockMvc
+            .perform(MockMvcRequestBuilders.post("http://localhost:8081/getMediaProfile")
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
             .andDo(print())
             .andReturn().getResponse().getContentAsString();

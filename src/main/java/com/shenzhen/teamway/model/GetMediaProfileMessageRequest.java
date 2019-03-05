@@ -1,5 +1,7 @@
 package com.shenzhen.teamway.model;
 
+import com.shenzhen.teamway.model.request.GetMediaProfileRequestBody;
+
 /**
  * 获取mediaProfile 请求消息
  * 
@@ -13,13 +15,13 @@ public class GetMediaProfileMessageRequest extends HeadMessage {
      */
     private static final long serialVersionUID = 6090068629014520466L;
 
-    private GetMediaProfileMessageRequest getMediaProfile;
+    private GetMediaProfileRequestBody getMediaProfile;
 
-    public GetMediaProfileMessageRequest getGetMediaProfile() {
+    public GetMediaProfileRequestBody getGetMediaProfile() {
         return getMediaProfile;
     }
 
-    public void setGetMediaProfile(GetMediaProfileMessageRequest getMediaProfile) {
+    public void setGetMediaProfile(GetMediaProfileRequestBody getMediaProfile) {
         this.getMediaProfile = getMediaProfile;
     }
 

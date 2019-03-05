@@ -1,18 +1,5 @@
 package com.shenzhen.teamway.controller;
 
-import com.shenzhen.teamway.model.CommandResultMessage;
-import com.shenzhen.teamway.model.GetMediaUrlMessageRequest;
-import com.shenzhen.teamway.model.GetMediaUrlMessageResponse;
-import com.shenzhen.teamway.model.GetPresetsMessageRequest;
-import com.shenzhen.teamway.model.GetPresetsMessageResponse;
-import com.shenzhen.teamway.model.GotoPresetMessageRequest;
-import com.shenzhen.teamway.model.SetPrestMessageRequest;
-import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
-import com.shenzhen.teamway.model.response.PresetInfo;
-
-import de.onvif.soap.OnvifDevice;
-import de.onvif.soap.devices.PtzDevices;
-
 import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +17,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shenzhen.teamway.model.CommandResultMessage;
+import com.shenzhen.teamway.model.GetMediaProfileMessageRequest;
+import com.shenzhen.teamway.model.GetMediaProfileMessageResponse;
+import com.shenzhen.teamway.model.GetMediaUrlMessageRequest;
+import com.shenzhen.teamway.model.GetMediaUrlMessageResponse;
+import com.shenzhen.teamway.model.GetPresetsMessageRequest;
+import com.shenzhen.teamway.model.GetPresetsMessageResponse;
+import com.shenzhen.teamway.model.GetPtzUrlMessageRequest;
+import com.shenzhen.teamway.model.GotoPresetMessageRequest;
+import com.shenzhen.teamway.model.RebootMessageRequest;
+import com.shenzhen.teamway.model.SetPrestMessageRequest;
+import com.shenzhen.teamway.model.GetPtzUrlMessageResponse;
+import com.shenzhen.teamway.model.response.GetMediaProfileResponseBody;
+import com.shenzhen.teamway.model.response.GetMediaUrlResponseBody;
+import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
+import com.shenzhen.teamway.model.response.GetPtzUrlResponseBody;
+import com.shenzhen.teamway.model.response.PresetInfo;
+import com.shenzhen.teamway.webservice.MyUrlOnvifDevice;
+
+import de.onvif.soap.OnvifDevice;
+import de.onvif.soap.devices.PtzDevices;
 
 /**
  * @author : Gaven
@@ -201,21 +210,186 @@ public class PresetsController {
         return resultMessage;
     }
     
+    /**
+     * 获取mediaUrl
+     * 
+     * @param getMediaUrlMessageRequest
+     * @return
+     */
     @RequestMapping(value = "/getMediaUrl", method = RequestMethod.POST)
     public @ResponseBody GetMediaUrlMessageResponse getMediaUrl(@RequestBody GetMediaUrlMessageRequest getMediaUrlMessageRequest) {
+        logger.info("-------------begin getMediaUrl ,method param:{}--------------------",getMediaUrlMessageRequest);
+        GetMediaUrlMessageResponse getMediaUrlMessageResponse = new GetMediaUrlMessageResponse();
+        CommandResultMessage resultMessage = new CommandResultMessage();
         try {
             String ip = getMediaUrlMessageRequest.getAddress().concat(":").concat(getMediaUrlMessageRequest.getPort());
             String userName = getMediaUrlMessageRequest.getUser();
             String password = getMediaUrlMessageRequest.getPassword();
             // 获取连接
-            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
-        } catch (ConnectException e) {
-             e.printStackTrace();
-        } catch (SOAPException e) {
-             e.printStackTrace();
-        }
-        return null;
+            MyUrlOnvifDevice myUrlOnvifDevice = new MyUrlOnvifDevice(ip, userName, password);
+            String mediaUrl = myUrlOnvifDevice.getMediaUri();
+            
+            // 封装返回消息内容
+            getMediaUrlMessageResponse.setCommand(getMediaUrlMessageRequest.getCommand());
+            getMediaUrlMessageResponse.setAddress(getMediaUrlMessageRequest.getAddress());
+            getMediaUrlMessageResponse.setPort(getMediaUrlMessageRequest.getPort());
+            getMediaUrlMessageResponse.setUser(getMediaUrlMessageRequest.getUser());
+            getMediaUrlMessageResponse.setPassword(getMediaUrlMessageRequest.getPassword());
+            getMediaUrlMessageResponse.setVersion(getMediaUrlMessageRequest.getVersion());
+            getMediaUrlMessageResponse.setUuid(getMediaUrlMessageRequest.getUuid());
 
+            GetMediaUrlResponseBody getMediaUrlResponseBody = new GetMediaUrlResponseBody();
+            getMediaUrlResponseBody.setMediaUrl(mediaUrl);
+            getMediaUrlMessageResponse.setGetMediaUrlResp(getMediaUrlResponseBody);
+            resultMessage.setResult(true);
+            resultMessage.setMessage("操作成功");
+            getMediaUrlMessageResponse.setCommandResultMessage(resultMessage);
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            e.printStackTrace();
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end getMediaUrl --------------------");
+        return getMediaUrlMessageResponse;
     }
     
+    /**
+     * 获取przUrl
+     * @param getPtzUrlMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/getPtzUrl", method = RequestMethod.POST)
+    public @ResponseBody GetPtzUrlMessageResponse getPtzUrl(@RequestBody GetPtzUrlMessageRequest getPtzUrlMessageRequest) {
+        logger.info("-------------begin getPtzUrl ,method param:{}--------------------",getPtzUrlMessageRequest);
+        GetPtzUrlMessageResponse getPtzUrlMessageResponse = new GetPtzUrlMessageResponse();
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = getPtzUrlMessageRequest.getAddress().concat(":").concat(getPtzUrlMessageRequest.getPort());
+            String userName = getPtzUrlMessageRequest.getUser();
+            String password = getPtzUrlMessageRequest.getPassword();
+            // 获取连接
+            MyUrlOnvifDevice myUrlOnvifDevice = new MyUrlOnvifDevice(ip, userName, password);
+            String ptzUrl = myUrlOnvifDevice.getPtzUri();
+            GetPtzUrlResponseBody getPtzUrlResponseBody = new GetPtzUrlResponseBody();
+            getPtzUrlResponseBody.setPtzUrl(ptzUrl);
+            
+            // 封装返回消息内容
+            getPtzUrlMessageResponse.setCommand(getPtzUrlMessageRequest.getCommand());
+            getPtzUrlMessageResponse.setAddress(getPtzUrlMessageRequest.getAddress());
+            getPtzUrlMessageResponse.setPort(getPtzUrlMessageRequest.getPort());
+            getPtzUrlMessageResponse.setUser(getPtzUrlMessageRequest.getUser());
+            getPtzUrlMessageResponse.setPassword(getPtzUrlMessageRequest.getPassword());
+            getPtzUrlMessageResponse.setVersion(getPtzUrlMessageRequest.getVersion());
+            getPtzUrlMessageResponse.setUuid(getPtzUrlMessageRequest.getUuid());
+            getPtzUrlMessageResponse.setGetPtzUrlResp(getPtzUrlResponseBody);
+            resultMessage.setResult(true);
+            resultMessage.setMessage("操作成功");
+            getPtzUrlMessageResponse.setCommandResp(resultMessage);
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            e.printStackTrace();
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end getPtzUrl --------------------");
+        return getPtzUrlMessageResponse;
+    }
+    
+    /**
+     * 获取Profile
+     * @param getMediaProfileMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/getMediaProfile", method = RequestMethod.POST)
+    public @ResponseBody GetMediaProfileMessageResponse  getMediaProfile(@RequestBody GetMediaProfileMessageRequest getMediaProfileMessageRequest) {
+        logger.info("-------------begin getMediaProfile ,method param:{}--------------------",getMediaProfileMessageRequest);
+        GetMediaProfileMessageResponse getMediaProfileMessageResponse = new GetMediaProfileMessageResponse();
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = getMediaProfileMessageRequest.getAddress().concat(":").concat(getMediaProfileMessageRequest.getPort());
+            String userName = getMediaProfileMessageRequest.getUser();
+            String password = getMediaProfileMessageRequest.getPassword();
+            // 获取连接
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
+            List<Profile> profile = nvt.getDevices().getProfiles();
+            
+            String profiles[] = new String[profile.size()];
+            for (int i = 0; i < profile.size(); i++) {
+                profiles[i] = profile.get(i).getName();
+            }
+            GetMediaProfileResponseBody getMediaProfileResponseBody = new GetMediaProfileResponseBody();
+            getMediaProfileResponseBody.setProfileNumber(profile.size());
+            getMediaProfileResponseBody.setProfiles(profiles);
+            
+            // 封装返回消息内容
+            getMediaProfileMessageResponse.setCommand(getMediaProfileMessageRequest.getCommand());
+            getMediaProfileMessageResponse.setAddress(getMediaProfileMessageRequest.getAddress());
+            getMediaProfileMessageResponse.setPort(getMediaProfileMessageRequest.getPort());
+            getMediaProfileMessageResponse.setUser(getMediaProfileMessageRequest.getUser());
+            getMediaProfileMessageResponse.setPassword(getMediaProfileMessageRequest.getPassword());
+            getMediaProfileMessageResponse.setVersion(getMediaProfileMessageRequest.getVersion());
+            getMediaProfileMessageResponse.setUuid(getMediaProfileMessageRequest.getUuid());
+            getMediaProfileMessageResponse.setGetMediaProfileResp(getMediaProfileResponseBody);
+            resultMessage.setResult(true);
+            resultMessage.setMessage("操作成功");
+            getMediaProfileMessageResponse.setCommandResp(resultMessage);
+            
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            e.printStackTrace();
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end getMediaProfile --------------------");
+        return getMediaProfileMessageResponse;
+    }
+    
+    /**
+     * 重启功能
+     * @param rebootMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/reboot", method = RequestMethod.POST)
+    public @ResponseBody CommandResultMessage reboot(@RequestBody RebootMessageRequest rebootMessageRequest) {
+        logger.info("-------------begin reboot ,method param:{}--------------------", rebootMessageRequest);
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = rebootMessageRequest.getAddress().concat(":").concat(rebootMessageRequest.getPort());
+            String userName = rebootMessageRequest.getUser();
+            String password = rebootMessageRequest.getPassword();
+            // 获取连接
+            OnvifDevice nvt = new OnvifDevice(ip, userName, password);
+            String msg = nvt.reboot();
+            resultMessage.setResult(true);
+            resultMessage.setMessage("返回消息" + msg);
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            e.printStackTrace();
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end reboot --------------------");
+        return resultMessage;
+    }
 }

@@ -1,5 +1,7 @@
 package com.shenzhen.teamway.model;
 
+import com.shenzhen.teamway.model.request.GetMediaUrlRequestBody;
+
 /**
  * 封装 获取 mediaUrl 消息实体
  * 
@@ -13,13 +15,13 @@ public class GetMediaUrlMessageRequest extends HeadMessage {
      */
     private static final long serialVersionUID = 9119765196510342147L;
 
-    private GetMediaUrlMessageRequest getMediaUrl;
+    private GetMediaUrlRequestBody getMediaUrl;
 
-    public GetMediaUrlMessageRequest getGetMediaUrl() {
+    public GetMediaUrlRequestBody getGetMediaUrl() {
         return getMediaUrl;
     }
 
-    public void setGetMediaUrl(GetMediaUrlMessageRequest getMediaUrl) {
+    public void setGetMediaUrl(GetMediaUrlRequestBody getMediaUrl) {
         this.getMediaUrl = getMediaUrl;
     }
 

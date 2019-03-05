@@ -1,12 +1,14 @@
 package com.shenzhen.teamway.model;
 
+import com.shenzhen.teamway.model.response.GetPtzUrlResponseBody;
+
 /**
  * 封装获取预置位url响应报文
  * 
  * @author gaven
  * @date 2019/03/02
  */
-public class getPtzUrlMessageResponse extends HeadMessage {
+public class GetPtzUrlMessageResponse extends HeadMessage {
 
     /**
      *
@@ -15,15 +17,7 @@ public class getPtzUrlMessageResponse extends HeadMessage {
 
     private CommandResultMessage commandResp;
 
-    private getPtzUrlMessageResponse getPtzUrlResp;
-
-    public getPtzUrlMessageResponse getGetPtzUrlResp() {
-        return getPtzUrlResp;
-    }
-
-    public void setGetPtzUrlResp(getPtzUrlMessageResponse getPtzUrlResp) {
-        this.getPtzUrlResp = getPtzUrlResp;
-    }
+    private GetPtzUrlResponseBody getPtzUrlResp;
 
     public CommandResultMessage getCommandResp() {
         return commandResp;
@@ -31,6 +25,14 @@ public class getPtzUrlMessageResponse extends HeadMessage {
 
     public void setCommandResp(CommandResultMessage commandResp) {
         this.commandResp = commandResp;
+    }
+
+    public GetPtzUrlResponseBody getGetPtzUrlResp() {
+        return getPtzUrlResp;
+    }
+
+    public void setGetPtzUrlResp(GetPtzUrlResponseBody getPtzUrlResp) {
+        this.getPtzUrlResp = getPtzUrlResp;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class getPtzUrlMessageResponse extends HeadMessage {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        getPtzUrlMessageResponse other = (getPtzUrlMessageResponse)obj;
+        GetPtzUrlMessageResponse other = (GetPtzUrlMessageResponse)obj;
         if (commandResp == null) {
             if (other.commandResp != null)
                 return false;

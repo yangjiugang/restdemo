@@ -1,7 +1,10 @@
 package com.shenzhen.teamway.model;
 
+import com.shenzhen.teamway.model.request.GetPtzUrlRequestBody;
+
 /**
  * 封装获取预置位请求消息实体
+ * 
  * @author gaven
  * @date 2019/03/02
  */
@@ -12,13 +15,13 @@ public class GetPtzUrlMessageRequest extends HeadMessage {
      */
     private static final long serialVersionUID = 8636396856881450260L;
 
-    private GetPtzUrlMessageRequest getPtzUrl;
+    private GetPtzUrlRequestBody getPtzUrl;
 
-    public GetPtzUrlMessageRequest getGetPtzUrl() {
+    public GetPtzUrlRequestBody getGetPtzUrl() {
         return getPtzUrl;
     }
 
-    public void setGetPtzUrl(GetPtzUrlMessageRequest getPtzUrl) {
+    public void setGetPtzUrl(GetPtzUrlRequestBody getPtzUrl) {
         this.getPtzUrl = getPtzUrl;
     }
 
