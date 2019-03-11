@@ -3,6 +3,8 @@ package com.shenzhen.teamway.controller;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,7 @@ import com.shenzhen.teamway.model.GetPresetsMessageRequest;
 import com.shenzhen.teamway.model.GetPtzUrlMessageRequest;
 import com.shenzhen.teamway.model.GotoPresetMessageRequest;
 import com.shenzhen.teamway.model.RebootMessageRequest;
+import com.shenzhen.teamway.model.SetDateAndTimeMessageRequest;
 import com.shenzhen.teamway.model.SetPrestMessageRequest;
 import com.shenzhen.teamway.model.request.GetMediaProfileRequestBody;
 import com.shenzhen.teamway.model.request.GetMediaUrlRequestBody;
@@ -29,6 +32,7 @@ import com.shenzhen.teamway.model.request.GetPresetsRequestBody;
 import com.shenzhen.teamway.model.request.GetPtzUrlRequestBody;
 import com.shenzhen.teamway.model.request.GotoPresetRequestBody;
 import com.shenzhen.teamway.model.request.RebootRequestBody;
+import com.shenzhen.teamway.model.request.SetDateAndTimeRequestBody;
 import com.shenzhen.teamway.model.request.SetPresetRequestBody;
 import com.shenzhen.teamway.model.response.GetMediaUrlResponseBody;
 
@@ -83,7 +87,7 @@ public class PresetsControllerTest {
         SetPresetRequestBody setPresetRequestBody = new SetPresetRequestBody();
         setPresetRequestBody.setPtzUrl("http://192.168.12.103:2000/onvif/PTZ");
         setPresetRequestBody.setProfile("profile_1");
-        setPresetRequestBody.setToken("1");
+        setPresetRequestBody.setToken("8");
         setPresetRequestBody.setName("preset1");
         setPrestMessageRequest.setSetPreset(setPresetRequestBody);
 
@@ -237,4 +241,53 @@ public class PresetsControllerTest {
 
         System.out.println("-----返回的json = " + responseString);
     }
+    
+    @Test
+    public void testCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        
+        SimpleDateFormat simdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        System.out.println("现在时间："+simdf.format(calendar.getTime()));
+        
+        System.out.println(calendar.get(calendar.YEAR));
+        System.out.println(calendar.get(calendar.MONTH)+1);
+        System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+//        
+        System.out.println(calendar.get(calendar.HOUR_OF_DAY));
+        System.out.println(calendar.get(calendar.MINUTE));
+        System.out.println(calendar.get(calendar.SECOND));
+        
+    }
+    
+    @Test
+    public void testSetDateAndTime() throws UnsupportedEncodingException, Exception {
+        SetDateAndTimeMessageRequest setDateAndTimeMessageRequest = new SetDateAndTimeMessageRequest();
+        setDateAndTimeMessageRequest.setCommand("setDateAndTime");
+        setDateAndTimeMessageRequest.setAddress("192.168.12.99");
+        setDateAndTimeMessageRequest.setPort("80");
+        setDateAndTimeMessageRequest.setUser("admin");
+        setDateAndTimeMessageRequest.setPassword("12345");
+        setDateAndTimeMessageRequest.setVersion(1);
+        setDateAndTimeMessageRequest.setUuid("000001");
+        
+        SetDateAndTimeRequestBody SetDateAndTimeRequestBody = new SetDateAndTimeRequestBody();
+        SetDateAndTimeRequestBody.setDateTime("2009-11-09 18:07:20");
+        SetDateAndTimeRequestBody.setTimeZone("CST-8");
+        setDateAndTimeMessageRequest.setSetDateAndTime(SetDateAndTimeRequestBody);
+//        RebootRequestBody rebootRequestBody = new  RebootRequestBody();
+//        rebootMessageRequest.setReboot(rebootRequestBody);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        java.lang.String requestJson = ow.writeValueAsString(setDateAndTimeMessageRequest);
+
+        String responseString = mockMvc
+            .perform(MockMvcRequestBuilders.post("http://localhost:8081/setDateAndTime")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+            .andDo(print())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println("-----返回的json = " + responseString);
+    }
+    
 }

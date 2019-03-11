@@ -1,4 +1,4 @@
-package com.shenzhen.teamway.webservice;
+package com.shenzhen.teamway.webservice.soap;
 
 import java.net.ConnectException;
 import java.text.SimpleDateFormat;

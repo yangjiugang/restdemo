@@ -28,6 +28,7 @@ import com.shenzhen.teamway.model.GetPresetsMessageResponse;
 import com.shenzhen.teamway.model.GetPtzUrlMessageRequest;
 import com.shenzhen.teamway.model.GotoPresetMessageRequest;
 import com.shenzhen.teamway.model.RebootMessageRequest;
+import com.shenzhen.teamway.model.SetDateAndTimeMessageRequest;
 import com.shenzhen.teamway.model.SetPrestMessageRequest;
 import com.shenzhen.teamway.model.GetPtzUrlMessageResponse;
 import com.shenzhen.teamway.model.response.GetMediaProfileResponseBody;
@@ -35,7 +36,8 @@ import com.shenzhen.teamway.model.response.GetMediaUrlResponseBody;
 import com.shenzhen.teamway.model.response.GetPresetsResponseBody;
 import com.shenzhen.teamway.model.response.GetPtzUrlResponseBody;
 import com.shenzhen.teamway.model.response.PresetInfo;
-import com.shenzhen.teamway.webservice.MyUrlOnvifDevice;
+import com.shenzhen.teamway.webservice.soap.MyOnvifDevice;
+import com.shenzhen.teamway.webservice.soap.MyUrlOnvifDevice;
 
 import de.onvif.soap.OnvifDevice;
 import de.onvif.soap.devices.PtzDevices;
@@ -390,6 +392,44 @@ public class PresetsController {
             e.printStackTrace();
         }
         logger.info("-------------end reboot --------------------");
+        return resultMessage;
+    }
+    
+    /**
+     * 设置时间 对时功能
+     * @param setDateAndTimeMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/setDateAndTime", method = RequestMethod.POST)
+    public @ResponseBody CommandResultMessage setDateAndTime(@RequestBody SetDateAndTimeMessageRequest setDateAndTimeMessageRequest) {
+        logger.info("-------------begin setDateAndTime ,method param:{}--------------------", setDateAndTimeMessageRequest);
+        CommandResultMessage resultMessage = new CommandResultMessage();
+        try {
+            String ip = setDateAndTimeMessageRequest.getAddress().concat(":").concat(setDateAndTimeMessageRequest.getPort());
+            String userName = setDateAndTimeMessageRequest.getUser();
+            String password = setDateAndTimeMessageRequest.getPassword();
+            // 获取连接
+            MyOnvifDevice nvt = new MyOnvifDevice(ip, userName, password);
+            boolean flag =   nvt.getDevices().setSystemDateAndTime(setDateAndTimeMessageRequest.getSetDateAndTime().getTimeZone(),setDateAndTimeMessageRequest.getSetDateAndTime().getDateTime());
+            if (flag) {
+                resultMessage.setResult(true);
+                resultMessage.setMessage("设置成功");
+            } else {
+                resultMessage.setResult(false);
+                resultMessage.setMessage("设置失败");
+            }
+        } catch (ConnectException e) {
+            logger.info("无法连接到nvt");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("无法连接到nvt");
+            e.printStackTrace();
+        } catch (SOAPException e) {
+            logger.info("设备出现故障");
+            resultMessage.setResult(false);
+            resultMessage.setMessage("设备出现故障");
+            e.printStackTrace();
+        }
+        logger.info("-------------end setDateAndTime --------------------");
         return resultMessage;
     }
 }
